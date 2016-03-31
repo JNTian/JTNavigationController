@@ -25,3 +25,10 @@
 @property (nonatomic, copy, readonly) NSArray *jt_viewControllers;
 
 @end
+
+
+@interface UINavigationController (JTExtention)
+
+@property (nonatomic, readonly) UINavigationControllerOperation jt_operation;
+
+@end

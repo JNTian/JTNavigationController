@@ -28,15 +28,18 @@
 @implementation JTWrapNavigationController
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
+    self.jt_navigationController.jt_operation = UINavigationControllerOperationPop;
     return [self.navigationController popViewControllerAnimated:animated];
 }
 
 - (NSArray<UIViewController *> *)popToRootViewControllerAnimated:(BOOL)animated {
+    self.jt_navigationController.jt_operation = UINavigationControllerOperationPop;
     return [self.navigationController popToRootViewControllerAnimated:animated];
 }
 
 - (NSArray<UIViewController *> *)popToViewController:(UIViewController *)viewController animated:(BOOL)animated {
     JTNavigationController *jt_navigationController = viewController.jt_navigationController;
+    jt_navigationController.jt_operation = UINavigationControllerOperationPop;
     NSInteger index = [jt_navigationController.jt_viewControllers indexOfObject:viewController];
     return [self.navigationController popToViewController:jt_navigationController.viewControllers[index] animated:animated];
 }
@@ -44,6 +47,7 @@
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
     viewController.jt_navigationController = (JTNavigationController *)self.navigationController;
     viewController.jt_fullScreenPopGestureEnabled = viewController.jt_navigationController.fullScreenPopGestureEnabled;
+    viewController.jt_navigationController.jt_operation = UINavigationControllerOperationPush;
     
     UIImage *backButtonImage = viewController.jt_navigationController.backButtonImage;
     if (!backButtonImage) {
