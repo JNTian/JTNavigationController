@@ -11,6 +11,14 @@
 
 #define kDefaultBackImageName @"backImage"
 
+@interface JTNavigationController () <UINavigationControllerDelegate, UIGestureRecognizerDelegate>
+
+@property (nonatomic, strong) UIPanGestureRecognizer *popPanGesture;
+@property (nonatomic, strong) id popGestureDelegate;
+@property (nonatomic, assign) UINavigationControllerOperation jt_operation;
+
+@end
+
 #pragma mark - JTWrapNavigationController
 
 @interface JTWrapNavigationController : UINavigationController
@@ -20,37 +28,39 @@
 @implementation JTWrapNavigationController
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
+    self.jt_navigationController.jt_operation = UINavigationControllerOperationPop;
     return [self.navigationController popViewControllerAnimated:animated];
 }
 
 - (NSArray<UIViewController *> *)popToRootViewControllerAnimated:(BOOL)animated {
+    self.jt_navigationController.jt_operation = UINavigationControllerOperationPop;
     return [self.navigationController popToRootViewControllerAnimated:animated];
 }
 
 - (NSArray<UIViewController *> *)popToViewController:(UIViewController *)viewController animated:(BOOL)animated {
     JTNavigationController *jt_navigationController = viewController.jt_navigationController;
+    jt_navigationController.jt_operation = UINavigationControllerOperationPop;
     NSInteger index = [jt_navigationController.jt_viewControllers indexOfObject:viewController];
     return [self.navigationController popToViewController:jt_navigationController.viewControllers[index] animated:animated];
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
-    
     viewController.jt_navigationController = (JTNavigationController *)self.navigationController;
     viewController.jt_fullScreenPopGestureEnabled = viewController.jt_navigationController.fullScreenPopGestureEnabled;
+    viewController.jt_navigationController.jt_operation = UINavigationControllerOperationPush;
     
     UIImage *backButtonImage = viewController.jt_navigationController.backButtonImage;
-    
     if (!backButtonImage) {
         backButtonImage = [UIImage imageNamed:kDefaultBackImageName];
     }
     
-    viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:backButtonImage style:UIBarButtonItemStylePlain target:self action:@selector(didTapBackButton)];
+    viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:backButtonImage
+                                                                                       style:UIBarButtonItemStylePlain
+                                                                                      target:viewController
+                                                                                      action:@selector(jt_didTapBackButton:)];
     
-    [self.navigationController pushViewController:[JTWrapViewController wrapViewControllerWithViewController:viewController] animated:animated];
-}
-
-- (void)didTapBackButton {
-    [self.navigationController popViewControllerAnimated:YES];
+    JTWrapViewController* wrapController = [JTWrapViewController wrapViewControllerWithViewController:viewController];
+    [self.navigationController pushViewController:wrapController animated:animated];
 }
 
 -(void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion{
@@ -136,14 +146,6 @@ static NSValue *jt_tabBarRectValue;
 
 #pragma mark - JTNavigationController
 
-@interface JTNavigationController () <UINavigationControllerDelegate, UIGestureRecognizerDelegate>
-
-@property (nonatomic, strong) UIPanGestureRecognizer *popPanGesture;
-
-@property (nonatomic, strong) id popGestureDelegate;
-
-@end
-
 @implementation JTNavigationController
 
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController {
@@ -172,9 +174,14 @@ static NSValue *jt_tabBarRectValue;
     SEL action = NSSelectorFromString(@"handleNavigationTransition:");
     self.popPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.popGestureDelegate action:action];
     self.popPanGesture.maximumNumberOfTouches = 1;
-    
 }
 
+- (UIViewController *)popViewControllerAnimated:(BOOL)animated {
+    UIViewController* result = [super popViewControllerAnimated:animated];
+    self.jt_operation = UINavigationControllerOperationPop;
+    
+    return result;
+}
 
 #pragma mark - UINavigationControllerDelegate
 
@@ -217,6 +224,20 @@ static NSValue *jt_tabBarRectValue;
         [viewControllers addObject:wrapViewController.rootViewController];
     }
     return viewControllers.copy;
+}
+
+@end
+
+
+@implementation UINavigationController (JTExtention)
+
+- (UINavigationControllerOperation)jt_operation {
+    if ([self isKindOfClass:[JTNavigationController class]]) {
+        JTNavigationController* controller = (JTNavigationController *)self;
+        return controller.jt_operation;
+    }
+    
+    return UINavigationControllerOperationNone;
 }
 
 @end

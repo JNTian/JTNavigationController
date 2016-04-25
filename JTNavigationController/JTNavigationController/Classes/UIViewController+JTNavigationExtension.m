@@ -27,4 +27,8 @@
     objc_setAssociatedObject(self, @selector(jt_navigationController), navigationController, OBJC_ASSOCIATION_RETAIN);
 }
 
+- (void)jt_didTapBackButton:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 @end

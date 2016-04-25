@@ -12,7 +12,8 @@
 @interface UIViewController (JTNavigationExtension)
 
 @property (nonatomic, assign) BOOL jt_fullScreenPopGestureEnabled;
-
 @property (nonatomic, strong) JTNavigationController *jt_navigationController;
+
+- (void)jt_didTapBackButton:(id)sender;
 
 @end
