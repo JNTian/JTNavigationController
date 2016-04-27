@@ -8,7 +8,7 @@
 
 #import "JTViewController.h"
 #import "UIColor+RandomColor.h"
-#import "UIViewController+JTNavigationExtension.h"
+#import "JTNavigationController.h"
 
 @interface JTViewController ()
 

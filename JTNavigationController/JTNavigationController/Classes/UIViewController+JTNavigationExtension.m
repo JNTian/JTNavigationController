@@ -16,7 +16,7 @@
 }
 
 - (void)setJt_fullScreenPopGestureEnabled:(BOOL)fullScreenPopGestureEnabled {
-    objc_setAssociatedObject(self, @selector(jt_fullScreenPopGestureEnabled), @(fullScreenPopGestureEnabled), OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(self, @selector(jt_fullScreenPopGestureEnabled), @(fullScreenPopGestureEnabled), OBJC_ASSOCIATION_ASSIGN);
 }
 
 - (JTNavigationController *)jt_navigationController {

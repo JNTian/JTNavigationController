@@ -12,8 +12,6 @@
 		94DDA7751C53BD190055D8A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 94DDA7731C53BD190055D8A1 /* Main.storyboard */; };
 		94DDA7771C53BD190055D8A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 94DDA7761C53BD190055D8A1 /* Assets.xcassets */; };
 		94DDA77A1C53BD190055D8A1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 94DDA7781C53BD190055D8A1 /* LaunchScreen.storyboard */; };
-		94DDA7881C53BD460055D8A1 /* backImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 94DDA7821C53BD460055D8A1 /* backImage@2x.png */; };
-		94DDA7891C53BD460055D8A1 /* backImage@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 94DDA7831C53BD460055D8A1 /* backImage@3x.png */; };
 		94DDA78B1C53BD460055D8A1 /* JTNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 94DDA7871C53BD460055D8A1 /* JTNavigationController.m */; };
 		94DDA7941C53BDFE0055D8A1 /* JTViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 94DDA7911C53BDFE0055D8A1 /* JTViewController.m */; };
 		94DDA7951C53BDFE0055D8A1 /* JTViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 94DDA7921C53BDFE0055D8A1 /* JTViewController.xib */; };
@@ -31,8 +29,6 @@
 		94DDA7761C53BD190055D8A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		94DDA7791C53BD190055D8A1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		94DDA77B1C53BD190055D8A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		94DDA7821C53BD460055D8A1 /* backImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backImage@2x.png"; sourceTree = "<group>"; };
-		94DDA7831C53BD460055D8A1 /* backImage@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backImage@3x.png"; sourceTree = "<group>"; };
 		94DDA7861C53BD460055D8A1 /* JTNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JTNavigationController.h; sourceTree = "<group>"; };
 		94DDA7871C53BD460055D8A1 /* JTNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JTNavigationController.m; sourceTree = "<group>"; };
 		94DDA7911C53BDFE0055D8A1 /* JTViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JTViewController.m; sourceTree = "<group>"; };
@@ -105,8 +101,6 @@
 		94DDA7811C53BD300055D8A1 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				94DDA7821C53BD460055D8A1 /* backImage@2x.png */,
-				94DDA7831C53BD460055D8A1 /* backImage@3x.png */,
 				94DDA7861C53BD460055D8A1 /* JTNavigationController.h */,
 				94DDA7871C53BD460055D8A1 /* JTNavigationController.m */,
 				D21AAB491C741F9800CFF134 /* UIViewController+JTNavigationExtension.h */,
@@ -182,11 +176,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				94DDA77A1C53BD190055D8A1 /* LaunchScreen.storyboard in Resources */,
-				94DDA7881C53BD460055D8A1 /* backImage@2x.png in Resources */,
 				94DDA7951C53BDFE0055D8A1 /* JTViewController.xib in Resources */,
 				94DDA7771C53BD190055D8A1 /* Assets.xcassets in Resources */,
 				94DDA7751C53BD190055D8A1 /* Main.storyboard in Resources */,
-				94DDA7891C53BD460055D8A1 /* backImage@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
