@@ -45,6 +45,10 @@
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    if (![self.navigationController isKindOfClass:[JTNavigationController class]]) {
+        return;
+    }
+    
     viewController.jt_navigationController = (JTNavigationController *)self.navigationController;
     viewController.jt_fullScreenPopGestureEnabled = viewController.jt_navigationController.fullScreenPopGestureEnabled;
     viewController.jt_navigationController.jt_operation = UINavigationControllerOperationPush;
@@ -65,7 +69,7 @@
 
 -(void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion{
     [self.navigationController dismissViewControllerAnimated:flag completion:completion];
-    self.viewControllers.firstObject.jt_navigationController=nil;
+    self.viewControllers.firstObject.jt_navigationController = nil;
 }
 
 @end
@@ -77,6 +81,10 @@ static NSValue *jt_tabBarRectValue;
 @implementation JTWrapViewController
 
 + (JTWrapViewController *)wrapViewControllerWithViewController:(UIViewController *)viewController {
+    if (!viewController) {
+        NSLog(@"%s %d Warning: wrapViewControllerWithViewController:nil", __FUNCTION__, __LINE__);
+        return nil;
+    }
     
     JTWrapNavigationController *wrapNavController = [[JTWrapNavigationController alloc] init];
     wrapNavController.viewControllers = @[viewController];
@@ -146,7 +154,9 @@ static NSValue *jt_tabBarRectValue;
 
 #pragma mark - JTNavigationController
 
-@implementation JTNavigationController
+@implementation JTNavigationController {
+    BOOL _shouldNextGestureFailed;
+}
 
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController {
     if (self = [super init]) {
@@ -181,6 +191,35 @@ static NSValue *jt_tabBarRectValue;
     self.jt_operation = UINavigationControllerOperationPop;
     
     return result;
+}
+
+#pragma mark - 横屏控制支持 
+
+- (BOOL)shouldAutorotate {
+    if (self.jt_viewControllers.count > 0) {
+        UIViewController* root = [self.jt_viewControllers firstObject];
+        return [root shouldAutorotate];
+    }
+    
+    return [super shouldAutorotate];
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    if (self.jt_viewControllers.count > 0) {
+        UIViewController* root = [self.jt_viewControllers firstObject];
+        return [root supportedInterfaceOrientations];
+    }
+    
+    return [super supportedInterfaceOrientations];
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
+    if (self.jt_viewControllers.count > 0) {
+        UIViewController* root = [self.jt_viewControllers firstObject];
+        return [root preferredInterfaceOrientationForPresentation];
+    }
+    
+    return [super preferredInterfaceOrientationForPresentation];
 }
 
 #pragma mark - UINavigationControllerDelegate
