@@ -240,4 +240,24 @@ static NSValue *jt_tabBarRectValue;
     return UINavigationControllerOperationNone;
 }
 
+- (NSArray *)jt_popViewControllerTwiceAnimated:(BOOL)animated {
+    if (![self.navigationController isKindOfClass:[JTNavigationController class]]) {
+        return nil;
+    }
+    
+    JTNavigationController* jt_navigationController = (JTNavigationController *)self.navigationController;
+    NSArray* viewControllers = jt_navigationController.jt_viewControllers;
+    NSInteger count = viewControllers.count;
+    NSInteger index = count - 3;
+    if (index < 0) {
+        // 出错了，没办法pop两次
+        UIViewController* controller = [self popViewControllerAnimated:animated];
+        NSArray* controllers = @[controller];
+        return controllers;
+    }
+    
+    UIViewController* viewController = [viewControllers objectAtIndex:index];
+    return [self popToViewController:viewController animated:animated];
+}
+
 @end

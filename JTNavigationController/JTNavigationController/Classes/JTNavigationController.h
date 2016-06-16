@@ -19,9 +19,7 @@
 @interface JTNavigationController : UINavigationController
 
 @property (nonatomic, strong) UIImage *backButtonImage;
-
 @property (nonatomic, assign) BOOL fullScreenPopGestureEnabled;
-
 @property (nonatomic, copy, readonly) NSArray *jt_viewControllers;
 
 @end
@@ -30,5 +28,7 @@
 @interface UINavigationController (JTExtention)
 
 @property (nonatomic, readonly) UINavigationControllerOperation jt_operation;
+
+- (NSArray *)jt_popViewControllerTwiceAnimated:(BOOL)animated;
 
 @end
