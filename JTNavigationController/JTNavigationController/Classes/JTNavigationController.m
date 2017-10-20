@@ -62,8 +62,6 @@
 
 #pragma mark - JTWrapViewController
 
-static NSValue *jt_tabBarRectValue;
-
 @implementation JTWrapViewController
 
 + (JTWrapViewController *)wrapViewControllerWithViewController:(UIViewController *)viewController {
@@ -78,30 +76,6 @@ static NSValue *jt_tabBarRectValue;
     return wrapViewController;
 }
 
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    
-    if (self.tabBarController && !jt_tabBarRectValue) {
-        jt_tabBarRectValue = [NSValue valueWithCGRect:self.tabBarController.tabBar.frame];
-    }
-    
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    if (self.tabBarController && [self rootViewController].hidesBottomBarWhenPushed) {
-        self.tabBarController.tabBar.frame = CGRectZero;
-    }
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    self.tabBarController.tabBar.translucent = YES;
-    if (self.tabBarController && !self.tabBarController.tabBar.hidden && jt_tabBarRectValue) {
-        self.tabBarController.tabBar.frame = jt_tabBarRectValue.CGRectValue;
-    }
-}
 
 - (BOOL)jt_fullScreenPopGestureEnabled {
     return [self rootViewController].jt_fullScreenPopGestureEnabled;
