@@ -68,7 +68,7 @@
     
     JTWrapNavigationController *wrapNavController = [[JTWrapNavigationController alloc] init];
     wrapNavController.viewControllers = @[viewController];
-    
+    wrapNavController.view.frame = CGRectMake(0, 0, wrapNavController.view.frame.size.width, wrapNavController.view.frame.size.height);
     JTWrapViewController *wrapViewController = [[JTWrapViewController alloc] init];
     [wrapViewController.view addSubview:wrapNavController.view];
     [wrapViewController addChildViewController:wrapNavController];
