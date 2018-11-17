@@ -34,7 +34,9 @@
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
-    
+    if (![self.navigationController isKindOfClass:[JTNavigationController class]]) {
+        return;
+    }
     viewController.jt_navigationController = (JTNavigationController *)self.navigationController;
     viewController.jt_fullScreenPopGestureEnabled = viewController.jt_navigationController.fullScreenPopGestureEnabled;
     
@@ -44,14 +46,11 @@
         backButtonImage = [UIImage imageNamed:kDefaultBackImageName];
     }
     
-    viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:backButtonImage style:UIBarButtonItemStylePlain target:self action:@selector(didTapBackButton)];
+    viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:backButtonImage style:UIBarButtonItemStylePlain target:viewController action:@selector(jt_didTapBackButton:)];
     
     [self.navigationController pushViewController:[JTWrapViewController wrapViewControllerWithViewController:viewController] animated:animated];
 }
 
-- (void)didTapBackButton {
-    [self.navigationController popViewControllerAnimated:YES];
-}
 
 -(void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion{
     [self.navigationController dismissViewControllerAnimated:flag completion:completion];
@@ -62,15 +61,16 @@
 
 #pragma mark - JTWrapViewController
 
-static NSValue *jt_tabBarRectValue;
-
 @implementation JTWrapViewController
 
 + (JTWrapViewController *)wrapViewControllerWithViewController:(UIViewController *)viewController {
-    
+    if (!viewController) {
+        NSLog(@"%s %d Warning: wrapViewControllerWithViewController:nil", __FUNCTION__, __LINE__);
+        return nil;
+    }
     JTWrapNavigationController *wrapNavController = [[JTWrapNavigationController alloc] init];
     wrapNavController.viewControllers = @[viewController];
-    
+    wrapNavController.view.frame = CGRectMake(0, 0, wrapNavController.view.frame.size.width, wrapNavController.view.frame.size.height);
     JTWrapViewController *wrapViewController = [[JTWrapViewController alloc] init];
     [wrapViewController.view addSubview:wrapNavController.view];
     [wrapViewController addChildViewController:wrapNavController];
@@ -78,30 +78,6 @@ static NSValue *jt_tabBarRectValue;
     return wrapViewController;
 }
 
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    
-    if (self.tabBarController && !jt_tabBarRectValue) {
-        jt_tabBarRectValue = [NSValue valueWithCGRect:self.tabBarController.tabBar.frame];
-    }
-    
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    if (self.tabBarController && [self rootViewController].hidesBottomBarWhenPushed) {
-        self.tabBarController.tabBar.frame = CGRectZero;
-    }
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    self.tabBarController.tabBar.translucent = YES;
-    if (self.tabBarController && !self.tabBarController.tabBar.hidden && jt_tabBarRectValue) {
-        self.tabBarController.tabBar.frame = jt_tabBarRectValue.CGRectValue;
-    }
-}
 
 - (BOOL)jt_fullScreenPopGestureEnabled {
     return [self rootViewController].jt_fullScreenPopGestureEnabled;
@@ -175,6 +151,34 @@ static NSValue *jt_tabBarRectValue;
     
 }
 
+#pragma mark - 横屏控制支持
+
+- (BOOL)shouldAutorotate {
+    if (self.jt_viewControllers.count > 0) {
+        UIViewController* root = [self.jt_viewControllers firstObject];
+        return [root shouldAutorotate];
+    }
+    
+    return [super shouldAutorotate];
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    if (self.jt_viewControllers.count > 0) {
+        UIViewController* root = [self.jt_viewControllers firstObject];
+        return [root supportedInterfaceOrientations];
+    }
+    
+    return [super supportedInterfaceOrientations];
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
+    if (self.jt_viewControllers.count > 0) {
+        UIViewController* root = [self.jt_viewControllers firstObject];
+        return [root preferredInterfaceOrientationForPresentation];
+    }
+    
+    return [super preferredInterfaceOrientationForPresentation];
+}
 
 #pragma mark - UINavigationControllerDelegate
 

@@ -15,4 +15,5 @@
 
 @property (nonatomic, weak) JTNavigationController *jt_navigationController;
 
+- (void)jt_didTapBackButton:(id)sender;
 @end
